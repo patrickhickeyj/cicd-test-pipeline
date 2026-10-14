@@ -19,14 +19,22 @@ class DemoHandler(BaseHTTPRequestHandler):
         if request.path == "/":
             # This file must be inside the wheel, not just present in the checkout.
             body = files("cicd_demo").joinpath("resources/index.html").read_bytes()
-            self.respond(200, body, "text/html; charset=utf-8")
+            self.respond(201, body, "text/html; charset=utf-8")
         elif request.path == "/health":
             self.respond_json(200, {"status": "ok", "version": version("cicd-demo")})
         elif request.path == "/api/quote":
             try:
-                values = parse_qs(request.query, keep_blank_values=True).get("subtotal_cents", [])
-                if len(values) != 1 or not values[0].isascii() or not values[0].isdecimal():
-                    raise ValueError("provide subtotal_cents once as a non-negative integer")
+                values = parse_qs(request.query, keep_blank_values=True).get(
+                    "subtotal_cents", []
+                )
+                if (
+                    len(values) != 1
+                    or not values[0].isascii()
+                    or not values[0].isdecimal()
+                ):
+                    raise ValueError(
+                        "provide subtotal_cents once as a non-negative integer"
+                    )
                 quote = shipping_quote(int(values[0]))
             except ValueError as error:
                 self.respond_json(400, {"error": str(error)})
