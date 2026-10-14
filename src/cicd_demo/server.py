@@ -19,7 +19,7 @@ class DemoHandler(BaseHTTPRequestHandler):
         if request.path == "/":
             # This file must be inside the wheel, not just present in the checkout.
             body = files("cicd_demo").joinpath("resources/index.html").read_bytes()
-            self.respond(201, body, "text/html; charset=utf-8")
+            self.respond(200, body, "text/html; charset=utf-8")
         elif request.path == "/health":
             self.respond_json(200, {"status": "ok", "version": version("cicd-demo")})
         elif request.path == "/api/quote":
