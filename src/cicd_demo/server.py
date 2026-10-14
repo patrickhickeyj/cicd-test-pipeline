@@ -13,6 +13,7 @@ from urllib.parse import parse_qs, urlsplit
 from cicd_demo.shipping import shipping_quote
 
 
+# test
 class DemoHandler(BaseHTTPRequestHandler):
     def do_GET(self) -> None:
         request = urlsplit(self.path)
